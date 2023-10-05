@@ -9,7 +9,7 @@ public class DBClient {
 
     public static final String DB_URL = "jdbc:mysql://localhost:3306/newdb";
     public static final String USER = "root";
-    public static final String PASSWORD = "$mySqlServer23";
+    public static final String PASSWORD = "mySqlServer23";
 
     private Connection connection = null;
     private Statement statement = null;
