@@ -38,6 +38,21 @@ public class DataBaseTest {
         assertThat(students).hasSize(9);
     }
 
+    @Test
+    public void updateAndSelectAllStudents() throws SQLException {
+        dbClient.executeUpdate
+                                ("INSERT INTO student (name, age) VALUES ('Vasa', 28)");
+        ResultSet resultSetAfterUpdate = dbClient.selectFrom("student");
+        List<Student> students2 = new ArrayList<>();
+        while (resultSetAfterUpdate.next()) {
+            students2.add(new Student().setId(resultSetAfterUpdate.getInt("id"))
+                                      .setName(resultSetAfterUpdate.getString("name"))
+                                      .setAge(resultSetAfterUpdate.getInt("age"))
+                                      .setGroupNumber(resultSetAfterUpdate.getInt("groupNumber")));
+        }
+        assertThat(students2).hasSize(10);
+    }
+
     @AfterMethod
     public void tearDown() {
         dbClient.close();
