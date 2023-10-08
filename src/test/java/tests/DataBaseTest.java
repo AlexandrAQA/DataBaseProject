@@ -35,23 +35,39 @@ public class DataBaseTest {
                                       .setAge(resultSet.getInt("age"))
                                       .setGroupNumber(resultSet.getInt("groupNumber")));
         }
-        assertThat(students).hasSize(9);
+        assertThat(students).hasSize(11);
     }
 
     @Test
     public void updateAndSelectAllStudents() throws SQLException {
         dbClient.executeUpdate
-                                ("INSERT INTO student (name, age) VALUES ('Vasa', 28)");
+                        ("INSERT INTO student (name, age) VALUES ('Vasa', 28)");
         ResultSet resultSetAfterUpdate = dbClient.selectFrom("student");
         List<Student> students2 = new ArrayList<>();
         while (resultSetAfterUpdate.next()) {
             students2.add(new Student().setId(resultSetAfterUpdate.getInt("id"))
-                                      .setName(resultSetAfterUpdate.getString("name"))
-                                      .setAge(resultSetAfterUpdate.getInt("age"))
-                                      .setGroupNumber(resultSetAfterUpdate.getInt("groupNumber")));
+                                       .setName(resultSetAfterUpdate.getString("name"))
+                                       .setAge(resultSetAfterUpdate.getInt("age"))
+                                       .setGroupNumber(resultSetAfterUpdate.getInt("groupNumber")));
         }
         assertThat(students2).hasSize(10);
     }
+
+    @Test
+    public void updateAndSelectAllStudentsWithPrepared() throws SQLException {
+        dbClient.executeUpdateWithPreparedStatement
+                        ("INSERT INTO student (name, age) VALUES (?, ?)");
+        ResultSet resultSetAfterUpdate = dbClient.selectFrom("student");
+        List<Student> students2 = new ArrayList<>();
+        while (resultSetAfterUpdate.next()) {
+            students2.add(new Student().setId(resultSetAfterUpdate.getInt("id"))
+                                       .setName(resultSetAfterUpdate.getString("name"))
+                                       .setAge(resultSetAfterUpdate.getInt("age"))
+                                       .setGroupNumber(resultSetAfterUpdate.getInt("groupNumber")));
+        }
+        assertThat(students2).hasSize(11);
+    }
+
 
     @AfterMethod
     public void tearDown() {

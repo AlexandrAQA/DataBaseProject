@@ -41,6 +41,18 @@ public class DBClient {
         }
     }
 
+    public void executeUpdateWithPreparedStatement(String query) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, "Garry");
+            preparedStatement.setInt(2, 29);
+            preparedStatement.executeUpdate();
+            log.info("Rows number affected is: ");
+        } catch (SQLException exception) {
+            log.error(exception.getMessage());
+        }
+    }
+
     public ResultSet selectFrom(String tableName) {
         try {
             return statement.executeQuery(String.format("SELECT * FROM %s", tableName));
